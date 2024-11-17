@@ -1,0 +1,296 @@
+openapi: 3.1.0
+info:
+  title: Asterisk attended transfer API
+  description: Asterisk attended transfer API
+  version: 1.0.0
+paths:
+  "/agents":
+    get:
+      description: Get status of agents
+      responses:
+        "200":
+          description: List of agents as per https://docs.asterisk.org/Asterisk_22_Documentation/API_Documentation/AMI_Events/Agents/
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/agent"
+        "500":
+          description: Internal server error
+          content:
+            "text/plain":
+              schema:
+                type: string
+
+  "/atxfer":
+    post:
+      description: Initiate attended transfer https://docs.asterisk.org/Latest_API/API_Documentation/AMI_Actions/Atxfer/
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              "$ref": "#/components/schemas/atxferRequest"
+
+      responses:
+        "200":
+          description: Attended Transfer result https://docs.asterisk.org/Asterisk_22_Documentation/API_Documentation/AMI_Events/AttendedTransfer/
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/atxferResponse"
+        "400":
+          description: Bad request
+          content:
+            "plain/text":
+              schema:
+                type: string
+        "500":
+          description: Internal server error
+          content:
+            "plain/text":
+              schema:
+                type: string
+components:
+  schemas:
+    agent:
+      type: "object"
+      properties:
+        Agent:
+          type: "string"
+        Name:
+          type: "string"
+        Status:
+          type: "string"
+        TalkingToChan:
+          type: "string"
+        CallStarted:
+          type: "string"
+        LoggedInTime:
+          type: "string"
+        Channel:
+          type: "string"
+        ChannelState:
+          type: "string"
+        ChannelStateDesc:
+          type: "string"
+        CallerIDNum:
+          type: "string"
+        CallerIDName:
+          type: "string"
+        ConnectedLineNum:
+          type: "string"
+        ConnectedLineName:
+          type: "string"
+        Language:
+          type: "string"
+        AccountCode:
+          type: "string"
+        Context:
+          type: "string"
+        Exten:
+          type: "string"
+        Priority:
+          type: "string"
+        Uniqueid:
+          type: "string"
+        Linkedid:
+          type: "string"
+        ActionID:
+          type: "string"
+    atxferRequest:
+      type: "object"
+      required:
+        - channel
+        - context
+        - exten
+      properties:
+        channel:
+          type: "string"
+        context:
+          type: "string"
+        exten:
+          type: "string"
+    atxferResponse:
+      type: "object"
+      properties:
+        Result:
+          type: string
+          enum: [ Success, Invalid, Fail, Not Permitted ]
+        OrigTransfererChannel:
+          type: "string"
+        OrigTransfererChannelState:
+          type: "string"
+        OrigTransfererChannelStateDesc:
+          type: "string"
+        OrigTransfererCallerIDNum:
+          type: "string"
+        OrigTransfererCallerIDName:
+          type: "string"
+        OrigTransfererConnectedLineNum:
+          type: "string"
+        OrigTransfererConnectedLineName:
+          type: "string"
+        OrigTransfererLanguage:
+          type: "string"
+        OrigTransfererAccountCode:
+          type: "string"
+        OrigTransfererContext:
+          type: "string"
+        OrigTransfererExten:
+          type: "string"
+        OrigTransfererPriority:
+          type: "string"
+        OrigTransfererUniqueid:
+          type: "string"
+        OrigTransfererLinkedid:
+          type: "string"
+        OrigBridgeUniqueid:
+          type: "string"
+        OrigBridgeType:
+          type: "string"
+        OrigBridgeTechnology:
+          type: "string"
+        OrigBridgeCreator:
+          type: "string"
+        OrigBridgeName:
+          type: "string"
+        OrigBridgeNumChannels:
+          type: "string"
+        OrigBridgeVideoSourceMode:
+          type: "string"
+        SecondTransfererChannel:
+          type: "string"
+        SecondTransfererChannelState:
+          type: "string"
+        SecondTransfererChannelStateDesc:
+          type: "string"
+        SecondTransfererCallerIDNum:
+          type: "string"
+        SecondTransfererCallerIDName:
+          type: "string"
+        SecondTransfererConnectedLineNum:
+          type: "string"
+        SecondTransfererConnectedLineName:
+          type: "string"
+        SecondTransfererLanguage:
+          type: "string"
+        SecondTransfererAccountCode:
+          type: "string"
+        SecondTransfererContext:
+          type: "string"
+        SecondTransfererExten:
+          type: "string"
+        SecondTransfererPriority:
+          type: "string"
+        SecondTransfererUniqueid:
+          type: "string"
+        SecondTransfererLinkedid:
+          type: "string"
+        SecondBridgeUniqueid:
+          type: "string"
+        SecondBridgeType:
+          type: "string"
+        SecondBridgeTechnology:
+          type: "string"
+        SecondBridgeCreator:
+          type: "string"
+        SecondBridgeName:
+          type: "string"
+        SecondBridgeNumChannels:
+          type: "string"
+        SecondBridgeVideoSourceMode:
+          type: "string"
+        DestType:
+          type: "string"
+        DestBridgeUniqueid:
+          type: "string"
+        DestApp:
+          type: "string"
+        LocalOneChannel:
+          type: "string"
+        LocalOneChannelState:
+          type: "string"
+        LocalOneChannelStateDesc:
+          type: "string"
+        LocalOneCallerIDNum:
+          type: "string"
+        LocalOneCallerIDName:
+          type: "string"
+        LocalOneConnectedLineNum:
+          type: "string"
+        LocalOneConnectedLineName:
+          type: "string"
+        LocalOneLanguage:
+          type: "string"
+        LocalOneAccountCode:
+          type: "string"
+        LocalOneContext:
+          type: "string"
+        LocalOneExten:
+          type: "string"
+        LocalOnePriority:
+          type: "string"
+        LocalOneUniqueid:
+          type: "string"
+        LocalOneLinkedid:
+          type: "string"
+        LocalTwoChannel:
+          type: "string"
+        LocalTwoChannelState:
+          type: "string"
+        LocalTwoChannelStateDesc:
+          type: "string"
+        LocalTwoCallerIDNum:
+          type: "string"
+        LocalTwoCallerIDName:
+          type: "string"
+        LocalTwoConnectedLineNum:
+          type: "string"
+        LocalTwoConnectedLineName:
+          type: "string"
+        LocalTwoLanguage:
+          type: "string"
+        LocalTwoAccountCode:
+          type: "string"
+        LocalTwoContext:
+          type: "string"
+        LocalTwoExten:
+          type: "string"
+        LocalTwoPriority:
+          type: "string"
+        LocalTwoUniqueid:
+          type: "string"
+        LocalTwoLinkedid:
+          type: "string"
+        DestTransfererChannel:
+          type: "string"
+        TransfereeChannel:
+          type: "string"
+        TransfereeChannelState:
+          type: "string"
+        TransfereeChannelStateDesc:
+          type: "string"
+        TransfereeCallerIDNum:
+          type: "string"
+        TransfereeCallerIDName:
+          type: "string"
+        TransfereeConnectedLineNum:
+          type: "string"
+        TransfereeConnectedLineName:
+          type: "string"
+        TransfereeLanguage:
+          type: "string"
+        TransfereeAccountCode:
+          type: "string"
+        TransfereeContext:
+          type: "string"
+        TransfereeExten:
+          type: "string"
+        TransfereePriority:
+          type: "string"
+        TransfereeUniqueid:
+          type: "string"
+        TransfereeLinkedid:
+          type: "string"
